@@ -1,0 +1,29 @@
+---
+// src/components/Footer.astro
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-white/10 bg-brand-dark mt-20">
+  <div class="mx-auto max-w-7xl px-6 py-12 md:flex md:items-center md:justify-between lg:px-8">
+    
+    <div class="flex justify-center md:order-2">
+       <p class="text-center text-xs leading-5 text-brand-sand/60">
+         &copy; {year} Discursivas. Todos os direitos reservados.
+         <br class="md:hidden"/>
+         <span class="hidden md:inline"> • </span>
+         Onde médicos começam.
+       </p>
+    </div>
+
+    <div class="mt-8 md:order-1 md:mt-0">
+      <div class="flex justify-center space-x-6 md:justify-start">
+        <a href="/" class="flex items-center gap-2 group">
+            <div class="h-6 w-6 rounded-tr-lg rounded-bl-lg bg-gradient-to-tr from-brand-orange to-brand-lilac"></div>
+            <span class="font-display text-lg font-bold text-white tracking-wide">
+              Discursivas<span class="text-brand-orange">.</span>
+            </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
