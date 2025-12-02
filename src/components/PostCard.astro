@@ -13,6 +13,15 @@ const formattedDate = post.data.pubDate.toLocaleDateString('pt-BR', {
   month: 'long',
   year: 'numeric',
 });
+
+// Lógica de segurança para pegar a categoria
+// Se tiver categorias, pega a primeira. Se não, usa "Geral".
+const rawCategory = post.data.categories && post.data.categories.length > 0 
+  ? post.data.categories[0] 
+  : 'Geral';
+
+// Deixa a primeira letra maiúscula (Ex: "biologia" -> "Biologia")
+const categoryLabel = rawCategory.charAt(0).toUpperCase() + rawCategory.slice(1);
 ---
 
 <article class="relative flex flex-col h-full bg-brand-card/60 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:border-brand-orange hover:shadow-2xl hover:shadow-brand-orange/10 hover:bg-brand-card/90 group">
@@ -35,7 +44,7 @@ const formattedDate = post.data.pubDate.toLocaleDateString('pt-BR', {
   <div class="p-6 flex flex-col flex-grow">
     <div class="flex items-center justify-between mb-4">
         <span class="text-brand-purple text-xs font-bold uppercase tracking-wider bg-brand-purple/10 px-2 py-1 rounded">
-            {post.data.tags[0]}
+            {categoryLabel}
         </span>
         <time datetime={post.data.pubDate.toISOString()} class="text-brand-gray text-xs">
             {formattedDate}
