@@ -6,7 +6,7 @@ import react from "@astrojs/react";
 
 export default defineConfig({
   // URL placeholder. Mudaremos para a real no final.
-  site: 'https://seublog-seo.netlify.app', 
+  site: 'https://blogdiscursivas.netlify.app', 
   
   integrations: [
     tailwind(), 

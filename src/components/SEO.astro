@@ -1,0 +1,38 @@
+---
+// src/components/SEO.astro
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  article?: boolean;
+}
+
+const { title, description, image, article } = Astro.props;
+
+// Pega a URL do site (vamos configurar isso no próximo passo)
+const siteUrl = Astro.site?.toString() || 'http://localhost:4321'; 
+
+// Cria a URL canônica (Canonical URL) - Essencial para o Google não achar conteúdo duplicado
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+
+// Resolve a imagem para o compartilhamento social
+const resolvedImage = image 
+  ? new URL(image, siteUrl).toString()
+  : new URL('/images/social-default.jpg', siteUrl).toString();
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+
+<meta property="og:type" content={article ? 'article' : 'website'} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={resolvedImage} />
+
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={canonicalURL} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={resolvedImage} />
