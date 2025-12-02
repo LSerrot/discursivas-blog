@@ -2,12 +2,19 @@ backend:
   name: git-gateway
   branch: main
 
-# Workflow Editorial (Kanban: Rascunho -> Em Revisão -> Pronto)
+# Integração CLOUDINARY (Substitua os valores abaixo)
+media_library:
+  name: cloudinary
+  config:
+    cloud_name: dritguaa3
+    api_key: 511564415414943
+    default_transformations:
+      - { fetch_format: auto, quality: auto } # Otimização automática
+    output_filename_only: false # Salva a URL completa (https://...)
+
+# Nota: Removemos media_folder e public_folder pois agora usamos a nuvem.
+
 publish_mode: editorial_workflow
-
-media_folder: "public/images/uploads"
-public_folder: "/images/uploads"
-
 site_url: https://blogdiscursivas.netlify.app
 display_url: https://blogdiscursivas.netlify.app
 logo_url: https://discursivas.com/wp-content/uploads/2025/11/Black-Med-Discursivas-Logo-1-scaled.png
@@ -20,15 +27,26 @@ collections:
     label_singular: "Artigo"
     folder: "src/content/blog"
     create: true
-    # Slug automático com data para organizar melhor (ex: 2025-12-02-titulo-do-post)
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    
+    # Define o nome do arquivo baseado no slug manual que você digitar
+    slug: "{{custom_slug}}"
+    
     summary: "{{title}}"
+    
     fields:
-      - {label: "Título", name: "title", widget: "string"}
+      - {label: "Título (H1)", name: "title", widget: "string"}
+      
+      # CAMPO DE URL PERSONALIZADA
+      - label: "URL do Post (Slug)"
+        name: "custom_slug"
+        widget: "string"
+        hint: "🔗 Ex: como-passar-em-medicina. (Use apenas letras minúsculas, números e hífens)."
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "⚠️ Erro: Use apenas letras minúsculas e hífens. Sem espaços ou acentos!"]
+      
       - {label: "Resumo SEO", name: "description", widget: "text"}
       - {label: "Data", name: "pubDate", widget: "datetime", format: "YYYY-MM-DD", default: ""}
       
-      # SELEÇÃO DE AUTOR OTIMIZADA
+      # Autor (Dropdown)
       - label: "Autor"
         name: "author"
         widget: "relation"
@@ -37,9 +55,8 @@ collections:
         value_field: "{{slug}}"
         display_fields: ["name"]
         default: "admin"
-        hint: "💡 Use o botão 'Quick add' no topo direito se precisar criar um novo autor agora."
 
-      # SELEÇÃO DE CATEGORIAS OTIMIZADA
+      # Categorias (Dropdown Multiplo)
       - label: "Disciplinas / Tags"
         name: "categories"
         widget: "relation"
@@ -48,23 +65,25 @@ collections:
         value_field: "{{slug}}"
         display_fields: ["{{parent}} > {{title}}"]
         multiple: true
-        hint: "🏷️ Selecione múltiplas. Use 'Quick add' no topo para criar novas."
 
-      - {label: "Capa", name: "image", widget: "image", required: false}
+      # Imagem (Agora abre o Cloudinary)
+      - label: "Capa"
+        name: "image"
+        widget: "image"
+        required: false
+        hint: "Clique para abrir a biblioteca do Cloudinary."
+
       - {label: "Rascunho", name: "draft", widget: "boolean", default: false}
       - {label: "Conteúdo", name: "body", widget: "markdown"}
 
   # --- AUTORES ---
   - name: "authors"
     label: "👥 Autores"
-    label_singular: "Autor"
     folder: "src/content/authors"
     create: true
-    # Slug automático baseado no nome (ex: nome: "Pedro" -> arquivo: "pedro.md")
     slug: "{{name}}"
-    summary: "{{name}} ({{role}})"
     fields:
-      - {label: "Nome Completo", name: "name", widget: "string"}
+      - {label: "Nome", name: "name", widget: "string"}
       - {label: "Cargo", name: "role", widget: "string", default: "Professor"}
       - {label: "Foto", name: "avatar", widget: "image"}
       - {label: "Bio", name: "bio", widget: "text", required: false}
@@ -72,13 +91,17 @@ collections:
   # --- CATEGORIAS ---
   - name: "categories"
     label: "📚 Disciplinas"
-    label_singular: "Disciplina"
     folder: "src/content/categories"
     create: true
-    # Slug automático
-    slug: "{{title}}" 
-    summary: "{{title}} (Pai: {{parent}})"
+    slug: "{{title}}"
     fields:
       - {label: "Nome", name: "title", widget: "string"}
-      - {label: "Categoria Mãe", name: "parent", widget: "string", required: false}
+      - label: "Categoria Mãe"
+        name: "parent"
+        widget: "relation"
+        collection: "categories"
+        search_fields: ["title"]
+        value_field: "{{title}}"
+        display_fields: ["title"]
+        required: false
       - {label: "Cor", name: "color", widget: "color", default: "#E07720"}

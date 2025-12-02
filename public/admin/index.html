@@ -7,40 +7,36 @@
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
+  <script src="https://unpkg.com/netlify-cms-media-library-cloudinary@^1.3.2/dist/umd/netlify-cms-media-library-cloudinary.js"></script>
+
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   
   <script>
-    // 1. Registra Fontes
+    // Registra Fontes
     CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800;900&family=Poppins:wght@300;400;600&display=swap");
 
-    // 2. Registra o Estilo Visual (BlackMed Seguro)
+    // Estilo Dark Mode Seguro
     CMS.registerPreviewStyle(`
-      /* Reset Básico para garantir o visual */
       body {
         background-color: #050505;
-        color: #F4E3D1; /* Areia */
+        color: #F4E3D1;
         font-family: 'Poppins', sans-serif;
         margin: 0;
         padding: 40px;
         min-height: 100vh;
-        position: relative;
         line-height: 1.8;
       }
-
-      /* --- SIMULAÇÃO DO FUNDO TECH (Via CSS Puro) --- */
+      /* Fundo Tech Simulado */
       body::before {
         content: "";
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background-image: 
-            linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), 
-            linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+        background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
         background-size: 40px 40px;
         opacity: 0.5;
         z-index: -1;
         pointer-events: none;
       }
-
-      /* --- SIMULAÇÃO DOS ORBS (Luzes) --- */
+      /* Orbs Simulados */
       body::after {
         content: "";
         position: fixed; top: -10%; left: -10%; width: 50vw; height: 50vw;
@@ -48,62 +44,15 @@
         z-index: -2;
         pointer-events: none;
       }
-
-      /* --- TIPOGRAFIA TÍTULOS --- */
-      h1, h2, h3, h4, h5, h6 {
-        font-family: 'Exo 2', sans-serif;
-        color: white;
-        font-weight: 800;
-        margin-top: 1.5em;
-        margin-bottom: 0.8em;
-        line-height: 1.2;
-        text-shadow: 0 0 20px rgba(0,0,0,0.5);
-      }
-
-      /* O Título Principal do Post */
-      h1 { 
-        font-size: 3em; 
-        border-bottom: 1px solid rgba(224, 119, 32, 0.3); /* Linha Laranja suave */
-        padding-bottom: 30px;
-        margin-bottom: 40px;
-      }
-
-      h2 { color: #E07720; text-transform: uppercase; letter-spacing: 1px; font-size: 2em; }
-      
-      /* --- ELEMENTOS RICOS --- */
-      a { color: #E07720; text-decoration: underline; transition: 0.3s; }
+      h1, h2, h3 { font-family: 'Exo 2', sans-serif; color: white; font-weight: 800; margin-top: 1.5em; line-height: 1.2; }
+      h1 { size: 3em; border-bottom: 1px solid rgba(224, 119, 32, 0.3); padding-bottom: 30px; margin-bottom: 40px; }
+      h2 { color: #E07720; text-transform: uppercase; letter-spacing: 1px; }
+      a { color: #E07720; }
       strong { color: white; font-weight: 800; }
-      
-      /* Citações / Destaques */
-      blockquote {
-        border-left: 4px solid #E07720;
-        margin: 30px 0;
-        padding: 20px 30px;
-        color: #b0b0b0;
-        font-style: italic;
-        background: rgba(255,255,255,0.03);
-        border-radius: 0 10px 10px 0;
-        font-size: 1.1em;
-      }
-
-      /* Imagens (Com efeito de vidro e sombra) */
-      img {
-        max-width: 100%;
-        border-radius: 12px;
-        border: 1px solid rgba(255,255,255,0.1);
-        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        display: block;
-        margin: 40px auto;
-      }
-
-      /* Listas */
+      blockquote { border-left: 4px solid #E07720; margin: 30px 0; padding: 20px 30px; color: #b0b0b0; font-style: italic; background: rgba(255,255,255,0.03); }
+      img { max-width: 100%; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 50px rgba(0,0,0,0.5); display: block; margin: 40px auto; }
       ul, ol { padding-left: 20px; color: #ccc; }
-      li { margin-bottom: 10px; }
       li::marker { color: #E07720; font-weight: bold; }
-
-      /* Divisores */
-      hr { border: 0; height: 1px; background: rgba(255,255,255,0.1); margin: 40px 0; }
-
     `, { raw: true });
   </script>
 </body>
