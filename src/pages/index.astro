@@ -2,31 +2,85 @@
 // src/pages/index.astro
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
 import PostCard from '../components/PostCard.astro';
 
-// Busca todos os posts da pasta src/content/blog
-// Filtra os rascunhos (draft: true) e ordena do mais recente para o mais antigo
-const posts = (await getCollection('blog'))
+// Busca posts, remove rascunhos e ordena
+const allPosts = (await getCollection('blog'))
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
+// Separa o primeiro post para ser o destaque (Hero)
+const featuredPost = allPosts[0];
+const otherPosts = allPosts.slice(1);
 ---
 
-<BaseLayout title="Home | Blog SEO Extremo">
-	<div class="py-24 sm:py-32">
-    <div class="mx-auto max-w-7xl px-6 lg:px-8">
-      <div class="mx-auto max-w-2xl text-center">
-        <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Últimas Publicações</h2>
-        <p class="mt-2 text-lg leading-8 text-gray-600">
-          Aprenda como dominar o SEO técnico com nossos guias.
-        </p>
-      </div>
-      
-      <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-        {posts.map((post) => (
-          <PostCard post={post} />
-        ))}
-      </div>
-    </div>
-  </div>
+<BaseLayout title="Blog Discursivas | Onde médicos começam">
+    <Header slot="header" />
+
+    <section class="py-10">
+        {featuredPost && (
+            <div class="relative overflow-hidden rounded-2xl bg-brand-dark border border-white/10 shadow-2xl group hover:border-brand-orange/50 transition-colors">
+                <div class="grid lg:grid-cols-2 gap-0">
+                    <div class="relative h-64 lg:h-auto overflow-hidden">
+                        {featuredPost.data.image ? (
+                            <img 
+                                src={featuredPost.data.image} 
+                                alt={featuredPost.data.title} 
+                                class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            />
+                        ) : (
+                             <div class="absolute inset-0 bg-gradient-to-br from-brand-lilac/20 to-brand-dark flex items-center justify-center">
+                                <span class="text-brand-sand/30 font-display text-4xl font-bold">Discursivas.</span>
+                             </div>
+                        )}
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/90 to-transparent lg:hidden"></div>
+                    </div>
+
+                    <div class="flex flex-col justify-center p-8 lg:p-12">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="px-3 py-1 text-xs font-bold uppercase tracking-wider text-brand-orange bg-brand-orange/10 rounded-full border border-brand-orange/20">
+                                Destaque
+                            </span>
+                            <span class="text-brand-sand/60 text-sm">
+                                {featuredPost.data.pubDate.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
+                            </span>
+                        </div>
+                        
+                        <h2 class="font-display text-3xl lg:text-4xl font-bold text-white mb-4 leading-tight group-hover:text-brand-orange transition-colors">
+                            <a href={`/blog/${featuredPost.slug}/`}>
+                                {featuredPost.data.title}
+                            </a>
+                        </h2>
+                        
+                        <p class="text-brand-sand/80 text-lg mb-8 line-clamp-3">
+                            {featuredPost.data.description}
+                        </p>
+                        
+                        <a href={`/blog/${featuredPost.slug}/`} class="inline-flex items-center text-white font-semibold hover:text-brand-orange transition-colors gap-2">
+                            Ler artigo completo
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        )}
+    </section>
+
+    <section class="py-12">
+        <div class="flex items-center justify-between mb-8">
+            <h3 class="font-display text-2xl font-bold text-white flex items-center gap-2">
+                <span class="w-2 h-8 rounded bg-brand-orange block"></span>
+                Últimas Publicações
+            </h3>
+        </div>
+
+        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {otherPosts.map((post) => (
+                <PostCard post={post} />
+            ))}
+        </div>
+    </section>
 </BaseLayout>

@@ -8,7 +8,6 @@ interface Props {
 
 const { post } = Astro.props;
 
-// Formatar data para padrão brasileiro
 const formattedDate = post.data.pubDate.toLocaleDateString('pt-BR', {
   day: 'numeric',
   month: 'long',
@@ -16,42 +15,42 @@ const formattedDate = post.data.pubDate.toLocaleDateString('pt-BR', {
 });
 ---
 
-<article class="group relative flex flex-col items-start">
-  <div class="h-48 w-full overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 sm:h-60 transition-opacity">
+<article class="flex flex-col group h-full">
+  <div class="relative overflow-hidden rounded-xl aspect-video bg-white/5 border border-white/10 mb-4">
     {post.data.image ? (
       <img 
         src={post.data.image} 
         alt={post.data.title} 
-        class="h-full w-full object-cover object-center"
+        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
         loading="lazy" 
       />
     ) : (
-      <div class="flex h-full items-center justify-center bg-gray-200 text-gray-400">
-        <span class="text-sm">Sem imagem</span>
+      <div class="h-full w-full flex items-center justify-center bg-brand-dark">
+        <span class="text-white/20 font-display text-xl">Discursivas</span>
       </div>
     )}
+    <div class="absolute inset-0 bg-brand-orange/0 group-hover:bg-brand-orange/10 transition-colors duration-300"></div>
   </div>
   
-  <div class="mt-4 flex items-center gap-x-4 text-xs">
-    <time datetime={post.data.pubDate.toISOString()} class="text-gray-500">
+  <div class="flex items-center gap-3 text-xs mb-3">
+    <time datetime={post.data.pubDate.toISOString()} class="text-brand-lilac font-medium">
       {formattedDate}
     </time>
-    {post.data.tags.map((tag) => (
-      <span class="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">
+    {post.data.tags.slice(0, 2).map((tag) => (
+      <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-brand-sand/70 text-[10px] uppercase tracking-wide">
         {tag}
       </span>
     ))}
   </div>
   
-  <div class="group relative">
-    <h3 class="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-blue-600">
-      <a href={`/blog/${post.slug}/`}>
-        <span class="absolute inset-0"></span>
-        {post.data.title}
-      </a>
-    </h3>
-    <p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
-      {post.data.description}
-    </p>
-  </div>
+  <h3 class="text-xl font-display font-bold text-white mb-2 leading-snug group-hover:text-brand-orange transition-colors">
+    <a href={`/blog/${post.slug}/`}>
+      <span class="absolute inset-0"></span>
+      {post.data.title}
+    </a>
+  </h3>
+  
+  <p class="text-sm text-brand-sand/70 line-clamp-3 leading-relaxed">
+    {post.data.description}
+  </p>
 </article>
