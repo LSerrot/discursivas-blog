@@ -1,30 +1,34 @@
 backend:
   name: git-gateway
   branch: main
+
+# Workflow Editorial (Kanban: Rascunho -> Em Revisão -> Pronto)
 publish_mode: editorial_workflow
+
 media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
+
 site_url: https://blogdiscursivas.netlify.app
 display_url: https://blogdiscursivas.netlify.app
 logo_url: https://discursivas.com/wp-content/uploads/2025/11/Black-Med-Discursivas-Logo-1-scaled.png
 locale: 'pt'
 
 collections:
-  # --- COLEÇÃO 1: BLOG (A Principal) ---
+  # --- BLOG ---
   - name: "blog"
     label: "📝 Artigos"
     label_singular: "Artigo"
     folder: "src/content/blog"
     create: true
-    slug: "{{slug}}"
+    # Slug automático com data para organizar melhor (ex: 2025-12-02-titulo-do-post)
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     summary: "{{title}}"
     fields:
       - {label: "Título", name: "title", widget: "string"}
       - {label: "Resumo SEO", name: "description", widget: "text"}
-      - {label: "Data", name: "pubDate", widget: "datetime", format: "YYYY-MM-DD"}
+      - {label: "Data", name: "pubDate", widget: "datetime", format: "YYYY-MM-DD", default: ""}
       
-      # CAMPO DE AUTOR INTELIGENTE
-      # Ele busca na coleção 'authors', mostra o 'name' mas salva o 'slug' (ID)
+      # SELEÇÃO DE AUTOR OTIMIZADA
       - label: "Autor"
         name: "author"
         widget: "relation"
@@ -33,43 +37,48 @@ collections:
         value_field: "{{slug}}"
         display_fields: ["name"]
         default: "admin"
+        hint: "💡 Use o botão 'Quick add' no topo direito se precisar criar um novo autor agora."
 
-      # CAMPO DE CATEGORIAS INTELIGENTE (Multi-seleção)
+      # SELEÇÃO DE CATEGORIAS OTIMIZADA
       - label: "Disciplinas / Tags"
         name: "categories"
         widget: "relation"
         collection: "categories"
         search_fields: ["title", "parent"]
         value_field: "{{slug}}"
-        # O TRUQUE: Mostra "Biologia > Genética" na lista de seleção
-        display_fields: ["{{parent}} > {{title}}"] 
+        display_fields: ["{{parent}} > {{title}}"]
         multiple: true
-        hint: "🏷️ Selecione uma ou mais categorias. Você pode buscar pelo nome da matéria."
+        hint: "🏷️ Selecione múltiplas. Use 'Quick add' no topo para criar novas."
 
       - {label: "Capa", name: "image", widget: "image", required: false}
       - {label: "Rascunho", name: "draft", widget: "boolean", default: false}
       - {label: "Conteúdo", name: "body", widget: "markdown"}
 
-  # --- COLEÇÃO 2: AUTORES (Banco de Dados de Pessoas) ---
+  # --- AUTORES ---
   - name: "authors"
-    label: "👥 Autores / Equipe"
+    label: "👥 Autores"
     label_singular: "Autor"
     folder: "src/content/authors"
     create: true
-    slug: "{{slug}}" # O nome do arquivo será o ID (ex: pedro-primao)
+    # Slug automático baseado no nome (ex: nome: "Pedro" -> arquivo: "pedro.md")
+    slug: "{{name}}"
+    summary: "{{name}} ({{role}})"
     fields:
       - {label: "Nome Completo", name: "name", widget: "string"}
-      - {label: "Cargo / Função", name: "role", widget: "string", default: "Professor"}
-      - {label: "Foto (Avatar)", name: "avatar", widget: "image"}
-      - {label: "Mini Bio", name: "bio", widget: "text", required: false}
+      - {label: "Cargo", name: "role", widget: "string", default: "Professor"}
+      - {label: "Foto", name: "avatar", widget: "image"}
+      - {label: "Bio", name: "bio", widget: "text", required: false}
 
-  # --- COLEÇÃO 3: CATEGORIAS (Banco de Dados de Matérias) ---
+  # --- CATEGORIAS ---
   - name: "categories"
-    label: "📚 Disciplinas e Tags"
+    label: "📚 Disciplinas"
+    label_singular: "Disciplina"
     folder: "src/content/categories"
     create: true
-    slug: "{{slug}}"
+    # Slug automático
+    slug: "{{title}}" 
+    summary: "{{title}} (Pai: {{parent}})"
     fields:
-      - {label: "Nome da Matéria/Tag", name: "title", widget: "string"}
-      - {label: "Categoria Mãe (Opcional)", name: "parent", widget: "string", required: false, hint: "Ex: Se a tag for 'Genética', a mãe é 'Biologia'."}
-      - {label: "Cor da Tag", name: "color", widget: "color", default: "#E07720"}
+      - {label: "Nome", name: "title", widget: "string"}
+      - {label: "Categoria Mãe", name: "parent", widget: "string", required: false}
+      - {label: "Cor", name: "color", widget: "color", default: "#E07720"}
