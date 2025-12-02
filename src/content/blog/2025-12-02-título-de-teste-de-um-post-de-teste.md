@@ -1,5 +1,6 @@
 ---
 title: Título de teste de um post de teste
+custom_slug: agora-a-url-desse-post-sera-assim
 description: Lorem ipsum dolor sit amet, consectetur ad hominem ad astra
   proficuos utilitis ad nosmus ad interatictus mentecaptus adulterus mutatis
   mutandis.
