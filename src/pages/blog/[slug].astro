@@ -2,8 +2,8 @@
 // src/pages/blog/[slug].astro
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
 
-// Esta função diz ao Astro quais páginas ele deve criar na hora do build
 export async function getStaticPaths() {
   const blogEntries = await getCollection('blog');
   return blogEntries.map(entry => ({
@@ -19,5 +19,22 @@ const { Content } = await entry.render();
   title={entry.data.title} 
   description={entry.data.description}
   image={entry.data.image}
-  article={true} 
+  article={true}
 >
+  <Header slot="header" />
+
+  <article class="py-10 max-w-3xl mx-auto px-4">
+    
+    <div style="border: 2px solid red; padding: 20px; color: white; margin-bottom: 20px;">
+        <h2 style="color: red; font-weight: bold;">TESTE DE DEBUG</h2>
+        <p>Se você lê isto, o layout carregou.</p>
+        <p>Título do Post: <strong>{entry.data.title}</strong></p>
+    </div>
+
+    <div class="prose prose-lg prose-invert">
+      <h3 class="text-white">Conteúdo abaixo:</h3>
+      <Content />
+    </div>
+
+  </article>
+</BaseLayout>
