@@ -1,24 +1,92 @@
-# public/admin/config.yml
 backend:
   name: git-gateway
-  branch: main # Branch principal do GitHub
+  branch: main
 
-# Onde as imagens dos posts serão salvas
+# Ativa o modo "Trello" (Colunas de Rascunho -> Revisão -> Publicado)
+publish_mode: editorial_workflow
+
+# Pasta das imagens
 media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
 
+# URL do site para o botão "Visualizar Site"
+site_url: https://blogdiscursivas.netlify.app
+
+# Configurações Visuais
+display_url: https://blogdiscursivas.netlify.app
+logo_url: https://discursivas.com/wp-content/uploads/2025/11/Black-Med-Discursivas-Logo-1-scaled.png
+locale: 'pt'
+
 collections:
   - name: "blog"
-    label: "Artigos"
-    folder: "src/content/blog" # Onde os textos serão salvos
+    label: "📝 Artigos do Blog"
+    label_singular: "Artigo"
+    folder: "src/content/blog"
     create: true
-    slug: "{{slug}}" # A URL do post será baseada no título
+    slug: "{{slug}}"
+    
+    # Visualização na lista (Card)
+    summary: "{{title}} — {{pubDate}}"
+    
     fields:
-      - {label: "Título (H1)", name: "title", widget: "string"}
-      - {label: "Meta Description (SEO)", name: "description", widget: "text", hint: "Resumo curto para o Google (150-160 caracteres)"}
-      - {label: "Data de Publicação", name: "pubDate", widget: "datetime"}
-      - {label: "Autor", name: "author", widget: "string", default: "Admin"}
-      - {label: "Imagem de Capa", name: "image", widget: "image", required: false}
-      - {label: "Tags", name: "tags", widget: "list", default: ["SEO"]}
-      - {label: "Rascunho", name: "draft", widget: "boolean", default: false}
-      - {label: "Conteúdo do Post", name: "body", widget: "markdown"}
+      - {
+          label: "Título Principal (H1)", 
+          name: "title", 
+          widget: "string",
+          hint: "💡 O título deve ser impactante e conter a palavra-chave principal. Ideal: 40-60 caracteres."
+        }
+
+      - {
+          label: "Resumo SEO (Meta Description)", 
+          name: "description", 
+          widget: "text",
+          hint: "🤖 Este texto aparece no Google e no WhatsApp. Resuma o post e gere curiosidade. Máximo 160 caracteres."
+        }
+
+      - {
+          label: "Data de Publicação", 
+          name: "pubDate", 
+          widget: "datetime",
+          format: "YYYY-MM-DD",
+          default: "",
+          hint: "📅 Posts futuros serão agendados automaticamente."
+        }
+
+      - {
+          label: "Autor", 
+          name: "author", 
+          widget: "string", 
+          default: "Discursivas Team",
+          hint: "👤 Quem assina este artigo?"
+        }
+
+      - {
+          label: "Imagem de Capa (Hero)", 
+          name: "image", 
+          widget: "image", 
+          required: false,
+          hint: "🖼️ Escolha uma imagem horizontal (1920x1080). Imagens escuras funcionam melhor com nossa identidade."
+        }
+
+      - {
+          label: "Categorias / Tags", 
+          name: "tags", 
+          widget: "list", 
+          default: ["Geral"],
+          hint: "🏷️ Pressione Enter após cada tag. Ex: 'Biologia', 'Dicas de Estudo'."
+        }
+
+      - {
+          label: "Status (Rascunho?)", 
+          name: "draft", 
+          widget: "boolean", 
+          default: false,
+          hint: "🔒 Se marcado, o post NÃO aparecerá no site final, apenas aqui no admin."
+        }
+
+      - {
+          label: "Conteúdo do Artigo", 
+          name: "body", 
+          widget: "markdown",
+          hint: "✍️ Escreva aqui. Use os botões acima para Negrito, Links e Imagens. O preview ao lado mostra como ficará."
+        }
