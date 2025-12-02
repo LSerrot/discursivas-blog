@@ -4,68 +4,57 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin | BlackMed Discursivas</title>
-  
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   
   <script>
-    // 1. Registra as fontes da marca para aparecerem no editor
+    // Registra as fontes para aparecerem corretamente
     CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Poppins:wght@300;400&display=swap");
 
-    // 2. Injeta o CSS Dark Mode apenas na janela de preview (lado direito)
+    // Registra o CSS Dark Mode (COM A CORREÇÃO { raw: true })
     CMS.registerPreviewStyle(`
       body {
-        background-color: #050505 !important;
-        color: #e5e5e5 !important;
-        font-family: 'Poppins', sans-serif !important;
-        padding: 40px !important;
-        line-height: 1.6 !important;
-        max-width: 800px;
-        margin: 0 auto;
+        background-color: #050505;
+        color: #e5e5e5;
+        font-family: 'Poppins', sans-serif;
+        padding: 20px;
+        line-height: 1.6;
       }
 
-      /* Títulos */
+      /* Títulos e Headers */
       h1, h2, h3, h4, h5, h6 {
-        font-family: 'Exo 2', sans-serif !important;
-        color: white !important;
-        font-weight: 700 !important;
+        font-family: 'Exo 2', sans-serif;
+        color: white;
+        font-weight: 700;
         margin-top: 1.5em;
         margin-bottom: 0.5em;
-        line-height: 1.2 !important;
+        line-height: 1.2;
       }
       
       h1 { 
-        font-size: 2.5em !important; 
+        font-size: 2.5em; 
         border-bottom: 1px solid #333; 
         padding-bottom: 20px;
         margin-bottom: 30px;
       }
       
-      h2 { 
-        color: #E07720 !important; /* Laranja Neon */
-        text-transform: uppercase; 
-        letter-spacing: 1px;
-        font-size: 1.8em !important;
-      }
-
-      /* Links */
-      a { 
-        color: #E07720 !important; 
-        text-decoration: underline;
-      }
-
-      /* Citações / Blockquotes */
+      h2 { color: #E07720; text-transform: uppercase; letter-spacing: 1px; }
+      
+      /* Elementos de Texto */
+      a { color: #E07720; text-decoration: underline; }
+      strong { color: white; font-weight: 800; }
+      
+      /* Citações */
       blockquote {
-        border-left: 4px solid #E07720 !important;
-        padding-left: 20px !important;
-        margin-left: 0 !important;
-        color: #b0b0b0 !important;
+        border-left: 4px solid #E07720;
+        padding-left: 20px;
+        color: #b0b0b0;
         font-style: italic;
         background: rgba(255,255,255,0.05);
         padding: 15px;
-        border-radius: 0 8px 8px 0;
+        border-radius: 4px;
       }
 
       /* Imagens */
@@ -77,15 +66,11 @@
         display: block;
         margin: 20px 0;
       }
-
-      /* Negrito e Itálico */
-      strong { color: white !important; font-weight: 800 !important; }
       
       /* Listas */
       ul, ol { padding-left: 20px; color: #ccc; }
       li { margin-bottom: 8px; }
-      li::marker { color: #E07720; }
-    `);
+    `, { raw: true }); 
   </script>
 </body>
 </html>
