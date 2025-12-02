@@ -5,175 +5,106 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin | BlackMed Discursivas</title>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  
-  <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </head>
 <body>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  
+  <script>
+    // 1. Registra Fontes
+    CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800;900&family=Poppins:wght@300;400;600&display=swap");
 
-  <script type="text/babel">
-    // 1. O ESTILO VISUAL (IDÊNTICO AO SITE)
-    const PreviewStyles = `
-      /* Fontes */
-      @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800;900&family=Poppins:wght@300;400;600&display=swap');
-
+    // 2. Registra o Estilo Visual (BlackMed Seguro)
+    CMS.registerPreviewStyle(`
+      /* Reset Básico para garantir o visual */
       body {
         background-color: #050505;
         color: #F4E3D1; /* Areia */
         font-family: 'Poppins', sans-serif;
         margin: 0;
-        padding: 0;
+        padding: 40px;
         min-height: 100vh;
         position: relative;
-        overflow-x: hidden;
+        line-height: 1.8;
       }
 
-      /* --- BACKGROUND TECH --- */
-      .tech-grid-bg {
+      /* --- SIMULAÇÃO DO FUNDO TECH (Via CSS Puro) --- */
+      body::before {
+        content: "";
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background-image: 
             linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), 
             linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
         background-size: 40px 40px;
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
         opacity: 0.5;
         z-index: -1;
-        mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-        -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        pointer-events: none;
       }
 
-      .orb {
-        position: fixed; border-radius: 50%; filter: blur(100px); z-index: -1; opacity: 0.2;
-      }
-      .orb-purple { top: -10%; left: -10%; width: 400px; height: 400px; background: #9579D4; }
-      .orb-orange { bottom: 10%; right: -10%; width: 400px; height: 400px; background: #E07720; }
-
-      /* --- CONTAINER DO POST --- */
-      .preview-container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 60px 20px;
+      /* --- SIMULAÇÃO DOS ORBS (Luzes) --- */
+      body::after {
+        content: "";
+        position: fixed; top: -10%; left: -10%; width: 50vw; height: 50vw;
+        background: radial-gradient(circle, rgba(149, 121, 212, 0.15) 0%, transparent 70%);
+        z-index: -2;
+        pointer-events: none;
       }
 
-      /* --- HEADER DO ARTIGO --- */
-      .post-header { text-align: center; margin-bottom: 40px; }
-      
-      .meta-info {
-        display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 20px;
-        font-size: 0.85rem;
-      }
-      .tag-badge {
-        color: #E07720; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-        background: rgba(224, 119, 32, 0.1); padding: 4px 12px; border-radius: 50px;
-        border: 1px solid rgba(224, 119, 32, 0.2);
-      }
-      .date { color: #9579D4; font-weight: 500; }
-
-      h1 {
+      /* --- TIPOGRAFIA TÍTULOS --- */
+      h1, h2, h3, h4, h5, h6 {
         font-family: 'Exo 2', sans-serif;
         color: white;
         font-weight: 800;
-        font-size: 3rem;
-        line-height: 1.1;
-        margin: 0 0 25px 0;
-        text-shadow: 0 0 30px rgba(255,255,255,0.1);
+        margin-top: 1.5em;
+        margin-bottom: 0.8em;
+        line-height: 1.2;
+        text-shadow: 0 0 20px rgba(0,0,0,0.5);
       }
 
-      .divider {
-        width: 100px; height: 4px; 
-        background: linear-gradient(to right, #E07720, #9579D4);
-        margin: 0 auto; border-radius: 10px;
+      /* O Título Principal do Post */
+      h1 { 
+        font-size: 3em; 
+        border-bottom: 1px solid rgba(224, 119, 32, 0.3); /* Linha Laranja suave */
+        padding-bottom: 30px;
+        margin-bottom: 40px;
       }
 
-      /* --- IMAGEM --- */
-      .hero-image-container {
-        margin-bottom: 50px;
-        border-radius: 16px;
-        overflow: hidden;
+      h2 { color: #E07720; text-transform: uppercase; letter-spacing: 1px; font-size: 2em; }
+      
+      /* --- ELEMENTOS RICOS --- */
+      a { color: #E07720; text-decoration: underline; transition: 0.3s; }
+      strong { color: white; font-weight: 800; }
+      
+      /* Citações / Destaques */
+      blockquote {
+        border-left: 4px solid #E07720;
+        margin: 30px 0;
+        padding: 20px 30px;
+        color: #b0b0b0;
+        font-style: italic;
+        background: rgba(255,255,255,0.03);
+        border-radius: 0 10px 10px 0;
+        font-size: 1.1em;
+      }
+
+      /* Imagens (Com efeito de vidro e sombra) */
+      img {
+        max-width: 100%;
+        border-radius: 12px;
         border: 1px solid rgba(255,255,255,0.1);
         box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        aspect-ratio: 16/9;
-      }
-      .hero-image { width: 100%; height: 100%; object-fit: cover; }
-      .hero-placeholder {
-        width: 100%; height: 100%; background: #111; display: flex; align-items: center; justify-content: center;
-        color: #333; font-family: 'Exo 2'; font-weight: 700; font-size: 2rem; text-transform: uppercase;
+        display: block;
+        margin: 40px auto;
       }
 
-      /* --- CONTEÚDO (PROSE) --- */
-      .prose {
-        font-size: 1.1rem; line-height: 1.8; color: #F4E3D1;
-      }
-      .prose h2, .prose h3 {
-        font-family: 'Exo 2', sans-serif; color: white; margin-top: 2em; margin-bottom: 0.8em; font-weight: 700;
-      }
-      .prose h2 { font-size: 2em; color: #E07720; }
-      .prose a { color: #E07720; }
-      .prose strong { color: white; }
-      .prose blockquote {
-        border-left: 4px solid #E07720; padding-left: 20px; font-style: italic; color: #bbb;
-        background: rgba(255,255,255,0.03); padding: 20px; border-radius: 0 8px 8px 0;
-      }
-      .prose img { max-width: 100%; border-radius: 8px; border: 1px solid #333; }
-      .prose ul { padding-left: 20px; }
-      .prose li { margin-bottom: 10px; }
-    `;
+      /* Listas */
+      ul, ol { padding-left: 20px; color: #ccc; }
+      li { margin-bottom: 10px; }
+      li::marker { color: #E07720; font-weight: bold; }
 
-    // 2. O COMPONENTE REACT (CLONE DO SITE)
-    const PostPreview = ({ entry, widgetFor, getAsset }) => {
-      // Pega os dados digitados no formulário
-      const data = entry.get('data').toJS();
-      const title = data.title || 'Sem Título';
-      const date = data.pubDate ? new Date(data.pubDate).toLocaleDateString('pt-BR') : 'Data Indefinida';
-      const tags = data.tags || ['Geral'];
-      
-      // Resolve a imagem (para aparecer mesmo antes de salvar)
-      const imagePath = data.image; 
-      const imageUrl = imagePath ? getAsset(imagePath).toString() : null;
+      /* Divisores */
+      hr { border: 0; height: 1px; background: rgba(255,255,255,0.1); margin: 40px 0; }
 
-      return (
-        <div className="preview-wrapper">
-          <style>{PreviewStyles}</style>
-
-          {/* Elementos de Background */}
-          <div className="tech-grid-bg"></div>
-          <div className="orb orb-purple"></div>
-          <div className="orb orb-orange"></div>
-
-          <div className="preview-container">
-            {/* Header do Post */}
-            <header className="post-header">
-              <div className="meta-info">
-                <span className="tag-badge">{tags[0]}</span>
-                <span className="date">{date}</span>
-              </div>
-              
-              <h1>{title}</h1>
-              
-              <div className="divider"></div>
-            </header>
-
-            {/* Imagem de Capa */}
-            <div className="hero-image-container">
-              {imageUrl ? (
-                <img src={imageUrl} className="hero-image" alt="Capa" />
-              ) : (
-                <div className="hero-placeholder">BlackMed Discursivas</div>
-              )}
-            </div>
-
-            {/* O Conteúdo (Body) */}
-            <div className="prose">
-              {widgetFor('body')}
-            </div>
-          </div>
-        </div>
-      );
-    };
-
-    // 3. REGISTRA O TEMPLATE
-    CMS.registerPreviewTemplate("blog", PostPreview);
+    `, { raw: true });
   </script>
 </body>
 </html>
