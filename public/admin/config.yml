@@ -1,92 +1,75 @@
 backend:
   name: git-gateway
   branch: main
-
-# Ativa o modo "Trello" (Colunas de Rascunho -> Revisão -> Publicado)
 publish_mode: editorial_workflow
-
-# Pasta das imagens
 media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
-
-# URL do site para o botão "Visualizar Site"
 site_url: https://blogdiscursivas.netlify.app
-
-# Configurações Visuais
 display_url: https://blogdiscursivas.netlify.app
 logo_url: https://discursivas.com/wp-content/uploads/2025/11/Black-Med-Discursivas-Logo-1-scaled.png
 locale: 'pt'
 
 collections:
+  # --- COLEÇÃO 1: BLOG (A Principal) ---
   - name: "blog"
-    label: "📝 Artigos do Blog"
+    label: "📝 Artigos"
     label_singular: "Artigo"
     folder: "src/content/blog"
     create: true
     slug: "{{slug}}"
-    
-    # Visualização na lista (Card)
-    summary: "{{title}} — {{pubDate}}"
-    
+    summary: "{{title}}"
     fields:
-      - {
-          label: "Título Principal (H1)", 
-          name: "title", 
-          widget: "string",
-          hint: "💡 O título deve ser impactante e conter a palavra-chave principal. Ideal: 40-60 caracteres."
-        }
+      - {label: "Título", name: "title", widget: "string"}
+      - {label: "Resumo SEO", name: "description", widget: "text"}
+      - {label: "Data", name: "pubDate", widget: "datetime", format: "YYYY-MM-DD"}
+      
+      # CAMPO DE AUTOR INTELIGENTE
+      # Ele busca na coleção 'authors', mostra o 'name' mas salva o 'slug' (ID)
+      - label: "Autor"
+        name: "author"
+        widget: "relation"
+        collection: "authors"
+        search_fields: ["name"]
+        value_field: "{{slug}}"
+        display_fields: ["name"]
+        default: "admin"
 
-      - {
-          label: "Resumo SEO (Meta Description)", 
-          name: "description", 
-          widget: "text",
-          hint: "🤖 Este texto aparece no Google e no WhatsApp. Resuma o post e gere curiosidade. Máximo 160 caracteres."
-        }
+      # CAMPO DE CATEGORIAS INTELIGENTE (Multi-seleção)
+      - label: "Disciplinas / Tags"
+        name: "categories"
+        widget: "relation"
+        collection: "categories"
+        search_fields: ["title", "parent"]
+        value_field: "{{slug}}"
+        # O TRUQUE: Mostra "Biologia > Genética" na lista de seleção
+        display_fields: ["{{parent}} > {{title}}"] 
+        multiple: true
+        hint: "🏷️ Selecione uma ou mais categorias. Você pode buscar pelo nome da matéria."
 
-      - {
-          label: "Data de Publicação", 
-          name: "pubDate", 
-          widget: "datetime",
-          format: "YYYY-MM-DD",
-          default: "",
-          hint: "📅 Posts futuros serão agendados automaticamente."
-        }
+      - {label: "Capa", name: "image", widget: "image", required: false}
+      - {label: "Rascunho", name: "draft", widget: "boolean", default: false}
+      - {label: "Conteúdo", name: "body", widget: "markdown"}
 
-      - {
-          label: "Autor", 
-          name: "author", 
-          widget: "string", 
-          default: "Discursivas Team",
-          hint: "👤 Quem assina este artigo?"
-        }
+  # --- COLEÇÃO 2: AUTORES (Banco de Dados de Pessoas) ---
+  - name: "authors"
+    label: "👥 Autores / Equipe"
+    label_singular: "Autor"
+    folder: "src/content/authors"
+    create: true
+    slug: "{{slug}}" # O nome do arquivo será o ID (ex: pedro-primao)
+    fields:
+      - {label: "Nome Completo", name: "name", widget: "string"}
+      - {label: "Cargo / Função", name: "role", widget: "string", default: "Professor"}
+      - {label: "Foto (Avatar)", name: "avatar", widget: "image"}
+      - {label: "Mini Bio", name: "bio", widget: "text", required: false}
 
-      - {
-          label: "Imagem de Capa (Hero)", 
-          name: "image", 
-          widget: "image", 
-          required: false,
-          hint: "🖼️ Escolha uma imagem horizontal (1920x1080). Imagens escuras funcionam melhor com nossa identidade."
-        }
-
-      - {
-          label: "Categorias / Tags", 
-          name: "tags", 
-          widget: "list", 
-          default: ["Geral"],
-          hint: "🏷️ Pressione Enter após cada tag. Ex: 'Biologia', 'Dicas de Estudo'."
-        }
-
-      - {
-          label: "Status (Rascunho?)", 
-          name: "draft", 
-          widget: "boolean", 
-          default: false,
-          hint: "🔒 Se marcado, o post NÃO aparecerá no site final, apenas aqui no admin."
-        }
-
-      - {
-          label: "Conteúdo do Artigo", 
-          name: "body", 
-          widget: "markdown",
-          hint: "✍️ Escreva aqui. Use os botões acima para Negrito, Links e Imagens. O preview ao lado mostra como ficará."
-        }
+  # --- COLEÇÃO 3: CATEGORIAS (Banco de Dados de Matérias) ---
+  - name: "categories"
+    label: "📚 Disciplinas e Tags"
+    folder: "src/content/categories"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Nome da Matéria/Tag", name: "title", widget: "string"}
+      - {label: "Categoria Mãe (Opcional)", name: "parent", widget: "string", required: false, hint: "Ex: Se a tag for 'Genética', a mãe é 'Biologia'."}
+      - {label: "Cor da Tag", name: "color", widget: "color", default: "#E07720"}

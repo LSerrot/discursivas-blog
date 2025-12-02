@@ -1,6 +1,6 @@
 ---
 // src/pages/blog/[slug].astro
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 
@@ -14,10 +14,21 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await entry.render();
 
+// --- LÓGICA DE RELACIONAMENTO ---
+
+// 1. Busca Autor (Se não existir, retorna null)
+const authorData = entry.data.author ? await getEntry('authors', entry.data.author) : null;
+
+// 2. Busca Categorias (COM A CORREÇÃO DO ERRO VERMELHO)
+const rawCategories = entry.data.categories 
+  ? await Promise.all(entry.data.categories.map(catId => getEntry('categories', catId)))
+  : [];
+
+// O Filtro Mágico: Remove qualquer resultado vazio/undefined para o TypeScript não reclamar
+const categoriesData = rawCategories.filter((cat) => cat !== undefined);
+
 const formattedDate = entry.data.pubDate.toLocaleDateString('pt-BR', {
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric',
+  day: 'numeric', month: 'long', year: 'numeric',
 });
 ---
 
@@ -31,20 +42,44 @@ const formattedDate = entry.data.pubDate.toLocaleDateString('pt-BR', {
 
   <article class="py-12 max-w-3xl mx-auto">
     <header class="mb-10 text-center px-4">
-        <div class="flex items-center justify-center gap-4 text-sm mb-6">
-            <span class="text-brand-orange font-bold uppercase tracking-wider bg-brand-orange/10 px-3 py-1 rounded-full border border-brand-orange/20">
-                {entry.data.tags[0] || 'Artigo'}
-            </span>
-            <time datetime={entry.data.pubDate.toISOString()} class="text-brand-lilac font-medium">
-                {formattedDate}
-            </time>
+        
+        <div class="flex flex-wrap items-center justify-center gap-2 mb-6">
+            {categoriesData.map((cat) => (
+                <span 
+                    class="font-bold uppercase tracking-wider px-3 py-1 rounded-full border text-xs"
+                    style={`color: ${cat.data.color}; border-color: ${cat.data.color}30; background-color: ${cat.data.color}10;`}
+                >
+                    {cat.data.parent ? `${cat.data.parent} > ` : ''}{cat.data.title}
+                </span>
+            ))}
         </div>
 
         <h1 class="font-display text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
             {entry.data.title}
         </h1>
 
-        <div class="w-24 h-1 bg-gradient-to-r from-brand-orange to-brand-lilac mx-auto rounded-full"></div>
+        {authorData && (
+            <div class="flex items-center justify-center gap-4 mt-8 mb-8">
+                <div class="relative">
+                    <div class="absolute -inset-1 rounded-full bg-gradient-to-tr from-brand-orange to-brand-purple blur-sm opacity-70"></div>
+                    <img 
+                        src={authorData.data.avatar || '/images/default-avatar.jpg'} 
+                        alt={authorData.data.name}
+                        class="relative w-12 h-12 rounded-full object-cover border-2 border-black"
+                    />
+                </div>
+                <div class="text-left">
+                    <p class="text-white font-bold text-sm leading-none mb-1">{authorData.data.name}</p>
+                    <div class="flex items-center gap-2 text-xs text-brand-gray">
+                        <span>{authorData.data.role}</span>
+                        <span class="w-1 h-1 rounded-full bg-brand-orange"></span>
+                        <time datetime={entry.data.pubDate.toISOString()}>{formattedDate}</time>
+                    </div>
+                </div>
+            </div>
+        )}
+
+        <div class="w-24 h-1 bg-gradient-to-r from-brand-orange to-brand-purple mx-auto rounded-full"></div>
     </header>
 
     {entry.data.image && (
