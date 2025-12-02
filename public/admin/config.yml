@@ -1,0 +1,24 @@
+# public/admin/config.yml
+backend:
+  name: git-gateway
+  branch: main # Branch principal do GitHub
+
+# Onde as imagens dos posts serão salvas
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "blog"
+    label: "Artigos"
+    folder: "src/content/blog" # Onde os textos serão salvos
+    create: true
+    slug: "{{slug}}" # A URL do post será baseada no título
+    fields:
+      - {label: "Título (H1)", name: "title", widget: "string"}
+      - {label: "Meta Description (SEO)", name: "description", widget: "text", hint: "Resumo curto para o Google (150-160 caracteres)"}
+      - {label: "Data de Publicação", name: "pubDate", widget: "datetime"}
+      - {label: "Autor", name: "author", widget: "string", default: "Admin"}
+      - {label: "Imagem de Capa", name: "image", widget: "image", required: false}
+      - {label: "Tags", name: "tags", widget: "list", default: ["SEO"]}
+      - {label: "Rascunho", name: "draft", widget: "boolean", default: false}
+      - {label: "Conteúdo do Post", name: "body", widget: "markdown"}

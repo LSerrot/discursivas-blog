@@ -1,0 +1,32 @@
+---
+// src/pages/index.astro
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+
+// Busca todos os posts da pasta src/content/blog
+// Filtra os rascunhos (draft: true) e ordena do mais recente para o mais antigo
+const posts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+---
+
+<BaseLayout title="Home | Blog SEO Extremo">
+	<div class="py-24 sm:py-32">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Últimas Publicações</h2>
+        <p class="mt-2 text-lg leading-8 text-gray-600">
+          Aprenda como dominar o SEO técnico com nossos guias.
+        </p>
+      </div>
+      
+      <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+        {posts.map((post) => (
+          <PostCard post={post} />
+        ))}
+      </div>
+    </div>
+  </div>
+</BaseLayout>
