@@ -15,42 +15,46 @@ const formattedDate = post.data.pubDate.toLocaleDateString('pt-BR', {
 });
 ---
 
-<article class="flex flex-col group h-full">
-  <div class="relative overflow-hidden rounded-xl aspect-video bg-white/5 border border-white/10 mb-4">
+<article class="relative flex flex-col h-full bg-brand-card/60 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:border-brand-orange hover:shadow-2xl hover:shadow-brand-orange/10 hover:bg-brand-card/90 group">
+  
+  <div class="h-48 w-full overflow-hidden relative">
     {post.data.image ? (
       <img 
         src={post.data.image} 
         alt={post.data.title} 
-        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-        loading="lazy" 
+        class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
       />
     ) : (
-      <div class="h-full w-full flex items-center justify-center bg-brand-dark">
-        <span class="text-white/20 font-display text-xl">Discursivas</span>
+      <div class="h-full w-full bg-brand-card flex items-center justify-center border-b border-white/5">
+        <span class="text-brand-gray/20 font-display font-bold text-xl uppercase tracking-widest">Discursivas</span>
       </div>
     )}
-    <div class="absolute inset-0 bg-brand-orange/0 group-hover:bg-brand-orange/10 transition-colors duration-300"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-brand-card via-transparent to-transparent"></div>
   </div>
   
-  <div class="flex items-center gap-3 text-xs mb-3">
-    <time datetime={post.data.pubDate.toISOString()} class="text-brand-lilac font-medium">
-      {formattedDate}
-    </time>
-    {post.data.tags.slice(0, 2).map((tag) => (
-      <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-brand-sand/70 text-[10px] uppercase tracking-wide">
-        {tag}
-      </span>
-    ))}
+  <div class="p-6 flex flex-col flex-grow">
+    <div class="flex items-center justify-between mb-4">
+        <span class="text-brand-purple text-xs font-bold uppercase tracking-wider bg-brand-purple/10 px-2 py-1 rounded">
+            {post.data.tags[0]}
+        </span>
+        <time datetime={post.data.pubDate.toISOString()} class="text-brand-gray text-xs">
+            {formattedDate}
+        </time>
+    </div>
+    
+    <h3 class="font-display text-xl font-bold text-white mb-3 leading-tight group-hover:text-brand-orange transition-colors">
+      <a href={`/blog/${post.slug}/`}>
+        <span class="absolute inset-0"></span>
+        {post.data.title}
+      </a>
+    </h3>
+    
+    <p class="text-brand-gray text-sm leading-relaxed line-clamp-3 mb-4">
+      {post.data.description}
+    </p>
+
+    <div class="mt-auto pt-4 border-t border-white/5 flex items-center text-brand-orange text-sm font-bold uppercase tracking-wider group-hover:translate-x-2 transition-transform">
+        Ler Artigo <span class="ml-2">→</span>
+    </div>
   </div>
-  
-  <h3 class="text-xl font-display font-bold text-white mb-2 leading-snug group-hover:text-brand-orange transition-colors">
-    <a href={`/blog/${post.slug}/`}>
-      <span class="absolute inset-0"></span>
-      {post.data.title}
-    </a>
-  </h3>
-  
-  <p class="text-sm text-brand-sand/70 line-clamp-3 leading-relaxed">
-    {post.data.description}
-  </p>
 </article>

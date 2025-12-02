@@ -3,27 +3,47 @@
 const year = new Date().getFullYear();
 ---
 
-<footer class="border-t border-white/10 bg-brand-dark mt-20">
-  <div class="mx-auto max-w-7xl px-6 py-12 md:flex md:items-center md:justify-between lg:px-8">
-    
-    <div class="flex justify-center md:order-2">
-       <p class="text-center text-xs leading-5 text-brand-sand/60">
-         &copy; {year} Discursivas. Todos os direitos reservados.
-         <br class="md:hidden"/>
-         <span class="hidden md:inline"> • </span>
-         Onde médicos começam.
-       </p>
+<footer class="border-t border-white/10 bg-black pt-20 pb-10 mt-20 relative z-10">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+        
+        <div class="md:col-span-1">
+            <span class="font-display text-2xl font-black text-white uppercase tracking-wider block mb-4">
+                BlackMed<span class="text-brand-orange">.</span>
+            </span>
+            <p class="text-brand-gray text-sm leading-relaxed">
+                Where estetos come true... 🩺
+            </p>
+        </div>
+
+        <div>
+            <h4 class="text-white font-bold uppercase tracking-widest mb-6 text-sm">Plataforma</h4>
+            <ul class="space-y-4 text-sm text-brand-gray">
+                <li><a href="#" class="hover:text-brand-orange transition-colors">Números Oficiais</a></li>
+                <li><a href="#" class="hover:text-brand-orange transition-colors">Suporte</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h4 class="text-white font-bold uppercase tracking-widest mb-6 text-sm">Legal</h4>
+            <ul class="space-y-4 text-sm text-brand-gray">
+                <li><a href="#" class="hover:text-brand-orange transition-colors">Termos de Uso</a></li>
+                <li><a href="#" class="hover:text-brand-orange transition-colors">Privacidade</a></li>
+            </ul>
+        </div>
+
+         <div>
+            <h4 class="text-white font-bold uppercase tracking-widest mb-6 text-sm">Social</h4>
+            <ul class="space-y-4 text-sm text-brand-gray">
+                <li><a href="#" class="hover:text-brand-orange transition-colors">Instagram</a></li>
+                <li><a href="#" class="hover:text-brand-orange transition-colors">YouTube</a></li>
+            </ul>
+        </div>
     </div>
 
-    <div class="mt-8 md:order-1 md:mt-0">
-      <div class="flex justify-center space-x-6 md:justify-start">
-        <a href="/" class="flex items-center gap-2 group">
-            <div class="h-6 w-6 rounded-tr-lg rounded-bl-lg bg-gradient-to-tr from-brand-orange to-brand-lilac"></div>
-            <span class="font-display text-lg font-bold text-white tracking-wide">
-              Discursivas<span class="text-brand-orange">.</span>
-            </span>
-        </a>
-      </div>
+    <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-brand-gray/50 gap-4">
+        <p>© {year} Discursivas Educação. CNPJ: 51.811.968/0001-39</p>
+        <p>Design System: BlackMed v2</p>
     </div>
   </div>
 </footer>

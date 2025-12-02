@@ -12,7 +12,7 @@ interface Props {
 
 const { 
     title, 
-    description = "Discursivas: Onde médicos começam.",
+    description = "Discursivas: A preparação mais técnica do Brasil.",
     image,
     article = false
 } = Astro.props;
@@ -28,25 +28,40 @@ const {
         
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Patrick+Hand&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-        <SEO 
-            title={title}
-            description={description}
-            image={image}
-            article={article}
-        />
+        <SEO title={title} description={description} image={image} article={article} />
 		<slot name="head" />
+
+        <style>
+            /* Efeito Tech Grid do seu CSS original */
+            .tech-grid-bg {
+                background-image: 
+                    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), 
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+                background-size: 40px 40px;
+                mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            }
+        </style>
 	</head>
 	
-    <body class="bg-brand-dark text-brand-sand antialiased font-sans flex flex-col min-h-screen selection:bg-brand-orange selection:text-white">
-		
-        <slot name="header" />
+    <body class="bg-brand-black text-brand-white font-body antialiased min-h-screen relative overflow-x-hidden">
+        
+        <div class="fixed inset-0 w-full h-full pointer-events-none z-0">
+            <div class="tech-grid-bg absolute top-0 left-0 w-full h-[80vh] opacity-50"></div>
+            
+            <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-brand-purple rounded-full blur-[120px] opacity-15 animate-orb-float"></div>
+            <div class="absolute bottom-[10%] right-[-10%] w-[500px] h-[500px] bg-brand-orange rounded-full blur-[120px] opacity-15 animate-orb-float" style="animation-delay: -5s;"></div>
+        </div>
 
-		<main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-			<slot />
-		</main>
+        <div class="relative z-10 flex flex-col min-h-screen">
+            <slot name="header" />
+            
+            <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                <slot />
+            </main>
 
-        <Footer slot="footer" />
+            <Footer />
+        </div>
 	</body>
 </html>
