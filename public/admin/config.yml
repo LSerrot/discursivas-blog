@@ -1,6 +1,9 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: LSerrot/discursivas-blog
   branch: main
+  base_url: https://discursivas-blog.pages.dev
+  auth_endpoint: /oauth/auth
 
 # Integração CLOUDINARY (Substitua os valores abaixo)
 media_library:
