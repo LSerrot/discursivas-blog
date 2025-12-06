@@ -4,15 +4,22 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin | BlackMed Discursivas</title>
-  </head>
+</head>
 <body>
   <script src="https://unpkg.com/netlify-cms-media-library-cloudinary@^1.3.2/dist/umd/netlify-cms-media-library-cloudinary.js"></script>
 
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   
   <script>
+    // --- CORREÇÃO CRÍTICA AQUI ---
+    // Registra a biblioteca do Cloudinary para o CMS saber que ela existe
+    CMS.registerMediaLibrary(cloudinary);
+    // -----------------------------
+
+    // Registra Fontes
     CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800;900&family=Poppins:wght@300;400;600&display=swap");
 
+    // Estilo Visual BlackMed
     CMS.registerPreviewStyle(`
       body {
         background-color: #050505;
