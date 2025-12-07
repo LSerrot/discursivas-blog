@@ -5,22 +5,17 @@ backend:
   base_url: https://discursivas-blog.pages.dev
   auth_endpoint: /oauth/auth
 
-# Integração CLOUDINARY (Substitua os valores abaixo)
-media_library:
-  name: cloudinary
-  config:
-    cloud_name: dritguaa3
-    api_key: 511564415414943
-    default_transformations:
-      - { fetch_format: auto, quality: auto } # Otimização automática
-    output_filename_only: false # Salva a URL completa (https://...)
-
-# Nota: Removemos media_folder e public_folder pois agora usamos a nuvem.
+# --- VOLTANDO PARA O BÁSICO (Armazenamento Local) ---
+# As imagens ficam na pasta do projeto. Simples e funcional.
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+# ----------------------------------------------------
 
 publish_mode: editorial_workflow
-site_url: https://blogdiscursivas.netlify.app
-display_url: https://blogdiscursivas.netlify.app
-logo_url: https://discursivas.com/wp-content/uploads/2025/11/Black-Med-Discursivas-Logo-1-scaled.png
+
+# URL CORRETA DA CLOUDFLARE
+site_url: https://discursivas-blog.pages.dev
+display_url: https://discursivas-blog.pages.dev
 locale: 'pt'
 
 collections:
@@ -30,26 +25,20 @@ collections:
     label_singular: "Artigo"
     folder: "src/content/blog"
     create: true
-    
-    # Define o nome do arquivo baseado no slug manual que você digitar
     slug: "{{custom_slug}}"
-    
     summary: "{{title}}"
-    
     fields:
       - {label: "Título (H1)", name: "title", widget: "string"}
       
-      # CAMPO DE URL PERSONALIZADA
       - label: "URL do Post (Slug)"
         name: "custom_slug"
         widget: "string"
-        hint: "🔗 Ex: como-passar-em-medicina. (Use apenas letras minúsculas, números e hífens)."
-        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "⚠️ Erro: Use apenas letras minúsculas e hífens. Sem espaços ou acentos!"]
+        hint: "🔗 Ex: como-passar-em-medicina"
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "⚠️ Erro: Use apenas letras minúsculas e hífens."]
       
       - {label: "Resumo SEO", name: "description", widget: "text"}
       - {label: "Data", name: "pubDate", widget: "datetime", format: "YYYY-MM-DD", default: ""}
       
-      # Autor (Dropdown)
       - label: "Autor"
         name: "author"
         widget: "relation"
@@ -59,7 +48,6 @@ collections:
         display_fields: ["name"]
         default: "admin"
 
-      # Categorias (Dropdown Multiplo)
       - label: "Disciplinas / Tags"
         name: "categories"
         widget: "relation"
@@ -69,12 +57,11 @@ collections:
         display_fields: ["{{parent}} > {{title}}"]
         multiple: true
 
-      # Imagem (Agora abre o Cloudinary)
+      # Imagem volta a ser o widget padrão (simples e funciona)
       - label: "Capa"
         name: "image"
         widget: "image"
         required: false
-        hint: "Clique para abrir a biblioteca do Cloudinary."
 
       - {label: "Rascunho", name: "draft", widget: "boolean", default: false}
       - {label: "Conteúdo", name: "body", widget: "markdown"}
