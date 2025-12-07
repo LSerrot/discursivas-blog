@@ -9,6 +9,7 @@ author: admin
 categories:
   - biologia
   - genetica
+image: /images/uploads/design-sem-nome-2025-11-22t201433.482.png
 draft: false
 ---
 
