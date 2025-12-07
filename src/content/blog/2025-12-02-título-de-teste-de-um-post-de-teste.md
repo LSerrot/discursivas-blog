@@ -5,7 +5,7 @@ description: Lorem ipsum dolor sit amet, consectetur ad hominem ad astra
   proficuos utilitis ad nosmus ad interatictus mentecaptus adulterus mutatis
   mutandis.
 pubDate: 2025-12-02
-author: admin
+author: luan-silva
 categories:
   - biologia
   - genetica
