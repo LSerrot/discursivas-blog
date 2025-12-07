@@ -1,5 +1,5 @@
 ---
-title: Bem-vindo ao Blog de Alta Performance
+title: Testagem dos testes
 custom_slug: museu-do-amanha-vira-festa
 description: Este é o primeiro post de teste para validar a estrutura de SEO do
   nosso novo blog em Astro.
