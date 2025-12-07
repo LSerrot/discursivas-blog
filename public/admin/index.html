@@ -11,10 +11,16 @@
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   
   <script>
-    // --- CORREÇÃO CRÍTICA AQUI ---
-    // Registra a biblioteca do Cloudinary para o CMS saber que ela existe
-    CMS.registerMediaLibrary(cloudinary);
-    // -----------------------------
+    // --- CORREÇÃO DE CARREGAMENTO ---
+    // Espera tudo carregar para não dar erro "undefined"
+    window.onload = function() {
+        if (typeof cloudinary !== 'undefined') {
+            CMS.registerMediaLibrary(cloudinary);
+            console.log("✅ Cloudinary registrado com sucesso!");
+        } else {
+            console.error("❌ Erro: Biblioteca Cloudinary não carregou.");
+        }
+    };
 
     // Registra Fontes
     CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800;900&family=Poppins:wght@300;400;600&display=swap");
@@ -30,6 +36,7 @@
         min-height: 100vh;
         line-height: 1.8;
       }
+      /* (O resto do CSS continua igual...) */
       body::before {
         content: "";
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -46,9 +53,8 @@
         z-index: -2;
         pointer-events: none;
       }
-      h1, h2, h3 { font-family: 'Exo 2', sans-serif; color: white; font-weight: 800; margin-top: 1.5em; line-height: 1.2; }
-      h1 { size: 3em; border-bottom: 1px solid rgba(224, 119, 32, 0.3); padding-bottom: 30px; margin-bottom: 40px; }
-      h2 { color: #E07720; text-transform: uppercase; letter-spacing: 1px; }
+      h1 { font-family: 'Exo 2', sans-serif; color: white; font-weight: 800; font-size: 3em; border-bottom: 1px solid rgba(224, 119, 32, 0.3); padding-bottom: 30px; margin-bottom: 40px; line-height: 1.2; }
+      h2, h3 { font-family: 'Exo 2', sans-serif; color: #E07720; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-top: 1.5em; }
       a { color: #E07720; }
       strong { color: white; font-weight: 800; }
       blockquote { border-left: 4px solid #E07720; margin: 30px 0; padding: 20px 30px; color: #b0b0b0; font-style: italic; background: rgba(255,255,255,0.03); }
